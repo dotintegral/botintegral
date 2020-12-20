@@ -1,0 +1,10 @@
+!.gitkeep
+node_modules/
+dist/
+tmp
+.DS_Store
+.idea
+.vscode/
+.vscode
+logs/
+config.json
