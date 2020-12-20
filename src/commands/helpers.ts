@@ -1,3 +1,4 @@
+import discord from "discord.js";
 import { Observable } from "rxjs";
 import { filter, map } from "rxjs/operators";
 import { pipe } from "ts-pipe-compose";
@@ -25,3 +26,11 @@ export const isCommand = (commandName: string) => (
       },
     ),
   );
+
+export const createOutcommingMessage = (channel: discord.TextChannel) => (
+  message: string,
+): OutcomingMessage => ({
+  type: "OutcomingMessage",
+  content: message,
+  channel,
+});

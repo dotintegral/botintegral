@@ -10,7 +10,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/ramda": "^0.27.34",
     "discord.js": "^12.5.1",
+    "ramda": "^0.27.1",
     "runtypes": "^5.0.1",
     "rxjs": "^6.6.3",
     "ts-pipe-compose": "^0.2.1"
