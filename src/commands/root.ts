@@ -2,6 +2,7 @@ import { merge, Observable } from "rxjs";
 import { IncomingMessage, OutcomingMessage } from "../types";
 import { countdown } from "./countdown";
 import { echo } from "./echo";
+import { quote } from "./quote";
 
 export interface RootCommand {
   (a: Observable<IncomingMessage | OutcomingMessage>): Observable<
@@ -9,4 +10,5 @@ export interface RootCommand {
   >;
 }
 
-export const root: RootCommand = (in$) => merge(in$, echo(in$), countdown(in$));
+export const root: RootCommand = (in$) =>
+  merge(in$, echo(in$), countdown(in$), quote(in$));

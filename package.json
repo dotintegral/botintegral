@@ -11,10 +11,13 @@
   "license": "ISC",
   "dependencies": {
     "@types/ramda": "^0.27.34",
+    "@types/sanctuary": "^3.0.3",
+    "axios": "^0.21.0",
     "discord.js": "^12.5.1",
     "ramda": "^0.27.1",
     "runtypes": "^5.0.1",
     "rxjs": "^6.6.3",
+    "sanctuary": "^3.1.0",
     "ts-pipe-compose": "^0.2.1"
   },
   "devDependencies": {
