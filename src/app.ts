@@ -13,12 +13,14 @@ const mainStream$ = new Subject<IncomingMessage>();
 client.login(config.discord.token);
 
 client.on("message", (message) => {
-  const { channel } = message;
-  if (channel.type === "text") {
+  const { channel, author, content } = message;
+  const botId = client.user?.id as string;
+
+  if (channel.type === "text" && botId !== author.id) {
     mainStream$.next({
       type: "IncomingMessage",
-      content: message.content,
-      user: message.author,
+      user: author,
+      content,
       channel,
     });
   }
