@@ -2,39 +2,54 @@ import { map, mergeMap } from "rxjs/operators";
 import { pipe } from "ts-pipe-compose";
 import { from, of } from "rxjs";
 import axios from "axios";
+import { either as e } from "fp-ts";
 import { Command, CommandMessage } from "../types";
-import { createOutcommingMessage, isCommand } from "./helpers";
+import { createOutcommingMessage, isCommand } from "../helpers/command";
 
 import config from "../../config.json";
+import { get } from "../helpers/axios";
 
-type QuoteData = Record<string, string>;
+interface QuoteData extends Record<string, string> {}
 
 // todo cache
-const fetchQuotes = () => from(axios.get<QuoteData>(config.data.quotes));
+const fetchQuotes = () => get<QuoteData>(config.data.quotes);
 
 const getQuotes = (msg: CommandMessage, index: string) =>
   pipe(
     fetchQuotes(),
-    map((result) => result.data?.[index]),
-    map((quote) => {
-      const msgCreator = createOutcommingMessage(msg.channel);
-
-      return quote
-        ? msgCreator(quote)
-        : msgCreator("Quote not found or invalid usage");
-    }),
+    map((quotesM) =>
+      pipe(
+        quotesM,
+        e.fromOption(() => "Quotes not available"),
+        e.map((x) => x[index]),
+        e.chain((quote) =>
+          !quote ? e.left("This quote does not exist") : e.right(quote),
+        ),
+      ),
+    ),
   );
 
 export const quote: Command = (in$) =>
   pipe(
     in$,
-    isCommand("quote"),
+    isCommand("q"),
     mergeMap((msg) => {
       const arg = msg.arguments[0];
       const msgCreator = createOutcommingMessage(msg.channel);
 
-      return arg
+      const result$ = arg
         ? getQuotes(msg, arg)
-        : of(msgCreator("Quote not found or invalid usage"));
+        : of(e.left("Invalid argument"));
+
+      return pipe(
+        result$,
+        map((resultE) =>
+          pipe(
+            resultE,
+            e.getOrElse((err) => err),
+            msgCreator,
+          ),
+        ),
+      );
     }),
   );
