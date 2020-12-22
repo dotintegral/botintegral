@@ -1,5 +1,3 @@
-import discord from "discord.js";
-
 import { merge, Observable } from "rxjs";
 import { pipe } from "ts-pipe-compose";
 import { filter, map, mergeMap } from "rxjs/operators";
@@ -10,7 +8,6 @@ import { get } from "./helpers/axios";
 import { IncomingMessage, Middleware, OutcomingMessage } from "./types";
 import config from "../config.json";
 import { createIncomingMessage } from "./helpers/command";
-import { client } from "./client";
 
 interface ReactionEntity {
   regex: string;
@@ -36,6 +33,7 @@ const react = (
 ): Observable<IncomingMessage | OutcomingMessage> =>
   pipe(
     in$,
+    filter((msg): msg is IncomingMessage => msg.type === "IncomingMessage"),
     mergeMap((msg) =>
       pipe(
         fetchReactions(),
@@ -44,7 +42,7 @@ const react = (
           o.isSome(reactionO),
         ),
         map((reactionSome) => reactionSome.value.command),
-        map(createIncomingMessage(msg.channel, client.user as discord.User)),
+        map(createIncomingMessage(msg.channel, msg.user)),
       ),
     ),
   );
