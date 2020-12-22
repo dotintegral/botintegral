@@ -1,9 +1,7 @@
 import { map, mergeMap } from "rxjs/operators";
 import { pipe } from "ts-pipe-compose";
-import { from, of } from "rxjs";
-import axios from "axios";
 import { either as e } from "fp-ts";
-import { Command, CommandMessage } from "../types";
+import { Command } from "../types";
 import { createOutcommingMessage, isCommand } from "../helpers/command";
 
 import config from "../../config.json";
@@ -14,14 +12,34 @@ interface QuoteData extends Record<string, string> {}
 // todo cache
 const fetchQuotes = () => get<QuoteData>(config.data.quotes);
 
-const getQuotes = (msg: CommandMessage, index: string) =>
+const randomKey = <T>(data: Record<string, T>): string => {
+  const keys = Object.keys(data);
+  const random = Math.floor(Math.random() * keys.length);
+  const key = keys[random];
+
+  return key;
+};
+
+const randomItem = <T>(data: Record<string, T>): T => data[randomKey(data)];
+
+const pickQuote = (index?: string) => (
+  quotes: QuoteData,
+): string | undefined => {
+  if (index) {
+    return quotes[index] || undefined;
+  }
+
+  return randomItem(quotes);
+};
+
+const getQuote = (index?: string) =>
   pipe(
     fetchQuotes(),
     map((quotesM) =>
       pipe(
         quotesM,
         e.fromOption(() => "Quotes not available"),
-        e.map((x) => x[index]),
+        e.map(pickQuote(index)),
         e.chain((quote) =>
           !quote ? e.left("This quote does not exist") : e.right(quote),
         ),
@@ -32,17 +50,14 @@ const getQuotes = (msg: CommandMessage, index: string) =>
 export const quote: Command = (in$) =>
   pipe(
     in$,
-    isCommand("q"),
+    isCommand("quote"),
     mergeMap((msg) => {
-      const arg = msg.arguments[0];
+      const index = msg.arguments[0] || undefined;
       const msgCreator = createOutcommingMessage(msg.channel);
 
-      const result$ = arg
-        ? getQuotes(msg, arg)
-        : of(e.left("Invalid argument"));
-
       return pipe(
-        result$,
+        index,
+        getQuote,
         map((resultE) =>
           pipe(
             resultE,
