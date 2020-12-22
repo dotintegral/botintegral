@@ -1,5 +1,5 @@
 import { pipe } from "ts-pipe-compose";
-import { filter } from "rxjs/operators";
+import { filter, tap } from "rxjs/operators";
 import { OutcomingMessage } from "./types";
 import config from "../config.json";
 import { root as rootCommand } from "./commands/root";
@@ -31,9 +31,7 @@ const resultStream$ = pipe(
 );
 
 resultStream$.subscribe((msg) => {
-  if (msg.type === "OutcomingMessage") {
-    const { channel, content } = msg;
-    console.log(`>> #${channel.name}: ${content}`);
-    channel.send(content);
-  }
+  const { channel, content } = msg;
+  console.log(`>> #${channel.name}: ${content}`);
+  channel.send(content);
 });
