@@ -2,7 +2,7 @@ import { map, mergeMap } from "rxjs/operators";
 import { pipe } from "ts-pipe-compose";
 import { either as e } from "fp-ts";
 import { Command } from "../types";
-import { createOutcommingMessage, isCommand } from "../helpers/command";
+import { createOutcomingMessage, isCommand } from "../helpers/command";
 
 import config from "../../config.json";
 import { get } from "../helpers/axios";
@@ -53,7 +53,7 @@ export const quote: Command = (in$) =>
     isCommand("quote"),
     mergeMap((msg) => {
       const index = msg.arguments[0] || undefined;
-      const msgCreator = createOutcommingMessage(msg.channel);
+      const msgCreator = createOutcomingMessage(msg.channel);
 
       return pipe(
         index,

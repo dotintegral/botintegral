@@ -1,15 +1,9 @@
-import { merge, Observable } from "rxjs";
-import { IncomingMessage, OutcomingMessage } from "../types";
+import { merge } from "rxjs";
+import { Middleware } from "../types";
 import { countdown } from "./countdown";
 import { echo } from "./echo";
 import { quote } from "./quote";
 import { channinfo } from "./chaninfo";
 
-export interface RootCommand {
-  (a: Observable<IncomingMessage | OutcomingMessage>): Observable<
-    OutcomingMessage | IncomingMessage
-  >;
-}
-
-export const root: RootCommand = (in$) =>
+export const root: Middleware = (in$) =>
   merge(in$, echo(in$), countdown(in$), quote(in$), channinfo(in$));

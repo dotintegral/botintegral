@@ -26,3 +26,9 @@ export interface Command {
     a: Observable<IncomingMessage | OutcomingMessage>,
   ): Observable<OutcomingMessage>;
 }
+
+export interface Middleware {
+  (a: Observable<IncomingMessage | OutcomingMessage>): Observable<
+    OutcomingMessage | IncomingMessage
+  >;
+}

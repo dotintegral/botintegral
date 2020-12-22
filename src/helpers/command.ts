@@ -29,10 +29,20 @@ export const isCommand = (commandName: string) => (
     ),
   );
 
-export const createOutcommingMessage = (channel: discord.TextChannel) => (
+export const createOutcomingMessage = (channel: discord.TextChannel) => (
   message: string,
 ): OutcomingMessage => ({
   type: "OutcomingMessage",
   content: message,
+  channel,
+});
+
+export const createIncomingMessage = (
+  channel: discord.TextChannel,
+  user: discord.User,
+) => (message: string): IncomingMessage => ({
+  type: "IncomingMessage",
+  content: message,
+  user,
   channel,
 });

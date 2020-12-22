@@ -1,12 +1,11 @@
-import discord from "discord.js";
 import { pipe } from "ts-pipe-compose";
 import { filter } from "rxjs/operators";
 import { OutcomingMessage } from "./types";
 import config from "../config.json";
 import { root as rootCommand } from "./commands/root";
 import { mainStream$ } from "./streams";
-
-const client = new discord.Client();
+import { reaction } from "./reaction";
+import { client } from "./client";
 
 client.login(config.discord.token);
 
@@ -26,6 +25,7 @@ client.on("message", (message) => {
 
 const resultStream$ = pipe(
   mainStream$,
+  reaction,
   rootCommand,
   filter((msg): msg is OutcomingMessage => msg.type === "OutcomingMessage"),
 );
