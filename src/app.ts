@@ -1,14 +1,12 @@
-import { Subject } from "rxjs";
 import discord from "discord.js";
 import { pipe } from "ts-pipe-compose";
 import { filter } from "rxjs/operators";
-import { IncomingMessage, OutcomingMessage } from "./types";
+import { OutcomingMessage } from "./types";
 import config from "../config.json";
 import { root as rootCommand } from "./commands/root";
+import { mainStream$ } from "./streams";
 
 const client = new discord.Client();
-
-const mainStream$ = new Subject<IncomingMessage>();
 
 client.login(config.discord.token);
 
