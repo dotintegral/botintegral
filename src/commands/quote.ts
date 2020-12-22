@@ -22,14 +22,32 @@ const randomKey = <T>(data: Record<string, T>): string => {
 
 const randomItem = <T>(data: Record<string, T>): T => data[randomKey(data)];
 
+interface QuoteIndex {
+  index: string;
+  quote: string;
+}
+
 const pickQuote = (index?: string) => (
   quotes: QuoteData,
-): string | undefined => {
+): QuoteIndex | undefined => {
   if (index) {
-    return quotes[index] || undefined;
+    const quote = quotes[index];
+
+    if (quote) {
+      return {
+        index,
+        quote,
+      };
+    }
+    return undefined;
   }
 
-  return randomItem(quotes);
+  const key = randomKey(quotes);
+
+  return {
+    index: key,
+    quote: quotes[key],
+  };
 };
 
 const getQuote = (index?: string) =>
@@ -40,8 +58,10 @@ const getQuote = (index?: string) =>
         quotesM,
         e.fromOption(() => "Quotes not available"),
         e.map(pickQuote(index)),
-        e.chain((quote) =>
-          !quote ? e.left("This quote does not exist") : e.right(quote),
+        e.chain((quoteIndex) =>
+          !quoteIndex
+            ? e.left("This quote does not exist")
+            : e.right(`Quote #${quoteIndex.index} \n> ${quoteIndex.quote}`),
         ),
       ),
     ),
