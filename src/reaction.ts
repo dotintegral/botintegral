@@ -1,6 +1,6 @@
-import { merge, Observable } from "rxjs";
+import { merge, Observable, of } from "rxjs";
 import { pipe } from "ts-pipe-compose";
-import { filter, map, mergeMap } from "rxjs/operators";
+import { filter, map, mergeMap, tap } from "rxjs/operators";
 import { option as o } from "fp-ts";
 import { Some } from "fp-ts/lib/Option";
 import { get } from "./helpers/axios";
@@ -47,4 +47,8 @@ const react = (
     ),
   );
 
-export const reaction: Middleware = (in$) => merge(in$, react(in$));
+export const reaction: Middleware = (in$) =>
+  pipe(
+    in$,
+    mergeMap((msg) => merge(of(msg), react(of(msg)))),
+  );

@@ -32,6 +32,5 @@ const resultStream$ = pipe(
 
 resultStream$.subscribe((msg) => {
   const { channel, content } = msg;
-  console.log(`>> #${channel.name}: ${content}`);
   channel.send(content);
 });
