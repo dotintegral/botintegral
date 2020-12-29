@@ -20,8 +20,6 @@ const randomKey = <T>(data: Record<string, T>): string => {
   return key;
 };
 
-const randomItem = <T>(data: Record<string, T>): T => data[randomKey(data)];
-
 interface QuoteIndex {
   index: string;
   quote: string;

@@ -2,16 +2,25 @@ import discord from "discord.js";
 import { Observable } from "rxjs";
 import { filter, map } from "rxjs/operators";
 import { pipe } from "ts-pipe-compose";
-import { CommandMessage, IncomingMessage, OutcomingMessage } from "../types";
+import {
+  AnyMessage,
+  CommandMessage,
+  IncomingMessage,
+  OutcomingMessage,
+  PhantomMessage,
+} from "../types";
 
 import config from "../../config.json";
 
 export const isCommand = (commandName: string) => (
-  in$: Observable<IncomingMessage | OutcomingMessage>,
+  in$: Observable<AnyMessage>,
 ): Observable<CommandMessage> =>
   pipe(
     in$,
-    filter((msg): msg is IncomingMessage => msg.type === "IncomingMessage"),
+    filter(
+      (msg): msg is IncomingMessage | PhantomMessage =>
+        msg.type === "IncomingMessage" || msg.type === "PhantomMessage",
+    ),
     filter((msg) =>
       msg.content.startsWith(`${config.bot.commandPrefix}${commandName}`),
     ),
@@ -42,6 +51,16 @@ export const createIncomingMessage = (
   user: discord.User,
 ) => (message: string): IncomingMessage => ({
   type: "IncomingMessage",
+  content: message,
+  user,
+  channel,
+});
+
+export const createPhantomMessage = (
+  channel: discord.TextChannel,
+  user: discord.User,
+) => (message: string): PhantomMessage => ({
+  type: "PhantomMessage",
   content: message,
   user,
   channel,

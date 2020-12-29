@@ -1,13 +1,13 @@
 import { merge, Observable, of } from "rxjs";
 import { pipe } from "ts-pipe-compose";
-import { filter, map, mergeMap, tap } from "rxjs/operators";
+import { filter, map, mergeMap } from "rxjs/operators";
 import { option as o } from "fp-ts";
 import { Some } from "fp-ts/lib/Option";
 import { get } from "../helpers/axios";
 
-import { IncomingMessage, Middleware, OutcomingMessage } from "../types";
+import { AnyMessage, IncomingMessage, Middleware } from "../types";
 import config from "../../config.json";
-import { createIncomingMessage } from "../helpers/command";
+import { createPhantomMessage } from "../helpers/command";
 
 interface ReactionEntity {
   regex: string;
@@ -28,9 +28,7 @@ const matchReaction = (message: string) => (
     ),
   );
 
-const react = (
-  in$: Observable<IncomingMessage | OutcomingMessage>,
-): Observable<IncomingMessage | OutcomingMessage> =>
+const react = (in$: Observable<AnyMessage>): Observable<AnyMessage> =>
   pipe(
     in$,
     filter((msg): msg is IncomingMessage => msg.type === "IncomingMessage"),
@@ -42,7 +40,7 @@ const react = (
           o.isSome(reactionO),
         ),
         map((reactionSome) => reactionSome.value.command),
-        map(createIncomingMessage(msg.channel, msg.user)),
+        map(createPhantomMessage(msg.channel, msg.user)),
       ),
     ),
   );

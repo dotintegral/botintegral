@@ -8,11 +8,20 @@ export interface IncomingMessage {
   channel: discord.TextChannel;
 }
 
+export interface PhantomMessage {
+  type: "PhantomMessage";
+  content: string;
+  user: discord.User;
+  channel: discord.TextChannel;
+}
+
 export interface OutcomingMessage {
   type: "OutcomingMessage";
   content: string;
   channel: discord.TextChannel;
 }
+
+export type AnyMessage = IncomingMessage | PhantomMessage | OutcomingMessage;
 
 export interface CommandMessage {
   type: "CommandMessage";
@@ -22,13 +31,9 @@ export interface CommandMessage {
 }
 
 export interface Command {
-  (
-    a: Observable<IncomingMessage | OutcomingMessage>,
-  ): Observable<OutcomingMessage>;
+  (a: Observable<AnyMessage>): Observable<OutcomingMessage>;
 }
 
 export interface Middleware {
-  (a: Observable<IncomingMessage | OutcomingMessage>): Observable<
-    OutcomingMessage | IncomingMessage
-  >;
+  (a: Observable<AnyMessage>): Observable<AnyMessage>;
 }

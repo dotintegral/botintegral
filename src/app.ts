@@ -2,10 +2,12 @@ import { pipe } from "ts-pipe-compose";
 import { filter } from "rxjs/operators";
 import { OutcomingMessage } from "./types";
 import config from "../config.json";
-import { root as rootCommand } from "./middleware/commands/root";
 import { mainStream$ } from "./streams";
-import { reaction } from "./middleware/reaction";
 import { client } from "./client";
+
+import { root as command } from "./middleware/commands/root";
+import { reaction } from "./middleware/reaction";
+import { initCron } from "./middleware/cron";
 
 client.login(config.discord.token);
 
@@ -23,10 +25,14 @@ client.on("message", (message) => {
   }
 });
 
+client.on("ready", () => {
+  initCron();
+});
+
 const resultStream$ = pipe(
   mainStream$,
   reaction,
-  rootCommand,
+  command,
   filter((msg): msg is OutcomingMessage => msg.type === "OutcomingMessage"),
 );
 

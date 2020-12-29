@@ -1,4 +1,4 @@
 import { Subject } from "rxjs";
-import { IncomingMessage } from "./types";
+import { IncomingMessage, PhantomMessage } from "./types";
 
-export const mainStream$ = new Subject<IncomingMessage>();
+export const mainStream$ = new Subject<IncomingMessage | PhantomMessage>();
