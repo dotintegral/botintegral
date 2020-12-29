@@ -1,10 +1,10 @@
 import { pipe } from "ts-pipe-compose";
-import { filter, tap } from "rxjs/operators";
+import { filter } from "rxjs/operators";
 import { OutcomingMessage } from "./types";
 import config from "../config.json";
-import { root as rootCommand } from "./commands/root";
+import { root as rootCommand } from "./middleware/commands/root";
 import { mainStream$ } from "./streams";
-import { reaction } from "./reaction";
+import { reaction } from "./middleware/reaction";
 import { client } from "./client";
 
 client.login(config.discord.token);

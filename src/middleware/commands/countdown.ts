@@ -3,8 +3,8 @@ import { merge, of } from "rxjs";
 import { range } from "ramda";
 import { delay, filter, mergeMap } from "rxjs/operators";
 import { pipe } from "ts-pipe-compose";
-import { Command } from "../types";
-import { createOutcomingMessage, isCommand } from "../helpers/command";
+import { Command } from "../../types";
+import { createOutcomingMessage, isCommand } from "../../helpers/command";
 
 export const countdown: Command = (in$) =>
   pipe(

@@ -1,11 +1,11 @@
 import { map, mergeMap } from "rxjs/operators";
 import { pipe } from "ts-pipe-compose";
 import { either as e } from "fp-ts";
-import { Command } from "../types";
-import { createOutcomingMessage, isCommand } from "../helpers/command";
+import { Command } from "../../types";
+import { createOutcomingMessage, isCommand } from "../../helpers/command";
 
-import config from "../../config.json";
-import { get } from "../helpers/axios";
+import config from "../../../config.json";
+import { get } from "../../helpers/axios";
 
 interface QuoteData extends Record<string, string> {}
 

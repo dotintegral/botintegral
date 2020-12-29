@@ -3,11 +3,11 @@ import { pipe } from "ts-pipe-compose";
 import { filter, map, mergeMap, tap } from "rxjs/operators";
 import { option as o } from "fp-ts";
 import { Some } from "fp-ts/lib/Option";
-import { get } from "./helpers/axios";
+import { get } from "../helpers/axios";
 
-import { IncomingMessage, Middleware, OutcomingMessage } from "./types";
-import config from "../config.json";
-import { createIncomingMessage } from "./helpers/command";
+import { IncomingMessage, Middleware, OutcomingMessage } from "../types";
+import config from "../../config.json";
+import { createIncomingMessage } from "../helpers/command";
 
 interface ReactionEntity {
   regex: string;
