@@ -2,6 +2,14 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
+const entries = Object.entries(process.env).filter(
+  ([key]) => !key.startsWith("npm_"),
+);
+
+const env = Object.fromEntries(entries);
+
+console.log({ env });
+
 export const config = {
   bot: {
     commandPrefix: process.env.COMMAND_PREFIX || "",

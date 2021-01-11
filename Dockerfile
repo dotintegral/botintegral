@@ -9,4 +9,6 @@ RUN yarn
 
 COPY ./ /app/
 
+RUN yarn run create-env
+
 CMD ["yarn", "start"]
