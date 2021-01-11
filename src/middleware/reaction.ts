@@ -6,8 +6,8 @@ import { Some } from "fp-ts/lib/Option";
 import { get } from "../helpers/axios";
 
 import { AnyMessage, IncomingMessage, Middleware } from "../types";
-import config from "../../config.json";
 import { createPhantomMessage } from "../helpers/command";
+import { config } from "../config";
 
 interface ReactionEntity {
   regex: string;

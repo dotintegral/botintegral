@@ -2,9 +2,9 @@ import axios from "axios";
 import discord from "discord.js";
 import nodeCron from "node-cron";
 import { client } from "../client";
+import { config } from "../config";
 import { createPhantomMessage } from "../helpers/command";
 import { mainStream$ } from "../streams";
-import config from "../../config.json";
 
 interface CronEntry {
   pattern: string;

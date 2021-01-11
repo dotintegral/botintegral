@@ -2,6 +2,7 @@ import discord from "discord.js";
 import { Observable } from "rxjs";
 import { filter, map } from "rxjs/operators";
 import { pipe } from "ts-pipe-compose";
+import { config } from "../config";
 import {
   AnyMessage,
   CommandMessage,
@@ -9,8 +10,6 @@ import {
   OutcomingMessage,
   PhantomMessage,
 } from "../types";
-
-import config from "../../config.json";
 
 export const isCommand = (commandName: string) => (
   in$: Observable<AnyMessage>,

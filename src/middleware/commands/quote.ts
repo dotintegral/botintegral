@@ -4,8 +4,8 @@ import { either as e } from "fp-ts";
 import { Command } from "../../types";
 import { createOutcomingMessage, isCommand } from "../../helpers/command";
 
-import config from "../../../config.json";
 import { get } from "../../helpers/axios";
+import { config } from "../../config";
 
 interface QuoteData extends Record<string, string> {}
 
