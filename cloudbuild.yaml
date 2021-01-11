@@ -5,10 +5,10 @@ steps:
 - name: "gcr.io/cloud-builders/docker"
   args: ["push", "gcr.io/dotintegral/botintegral:$SHORT_SHA"]
 
-- name: "gcr.io/cloud-builders/gke-deploy"
-  args:
-  - run
-  - --filename=kubernetes-resource-file
-  - --image=gcr.io/dotintegral/botintegral:$SHORT_SHA
-  - --location=location
-  - --cluster=cluster
+# - name: "gcr.io/cloud-builders/gke-deploy"
+#   args:
+#   - run
+#   - --filename=kubernetes-resource-file
+#   - --image=gcr.io/dotintegral/botintegral:$SHORT_SHA
+#   - --location=location
+#   - --cluster=cluster
