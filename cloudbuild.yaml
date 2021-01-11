@@ -1,15 +1,16 @@
 steps:
-- name: "gcr.io/cloud-builders/docker"
+ - name: node:10.15.1
+  entrypoint: yarn
+  args: ["run", "create-env"]
   env:
-  args: ["build", 
-    "-t", "gcr.io/dotintegral/botintegral:$SHORT_SHA",
-    "--env", "COMMAND_PREFIX=${_COMMAND_PREFIX}",
-    "--env", "DISCORD_TOKEN=${_DISCORD_TOKEN}",
-    "--env", "DATA_QUOTES=${_DATA_QUOTES}",
-    "--env", "DATA_QUOTES=${_DATA_QUOTES}",
-    "--env", "DATA_CRONTAB=${_DATA_CRONTAB}",
-    "."
-    ]
+    - 'COMMAND_PREFIX=${_COMMAND_PREFIX}'
+    - 'DISCORD_TOKEN=${_DISCORD_TOKEN}'
+    - 'DATA_QUOTES=${_DATA_QUOTES}'
+    - 'DATA_QUOTES=${_DATA_QUOTES}'
+    - 'DATA_CRONTAB=${_DATA_CRONTAB}'
+
+- name: "gcr.io/cloud-builders/docker"
+  args: ["build", "-t", "gcr.io/dotintegral/botintegral:$SHORT_SHA", "."]
 
 - name: "gcr.io/cloud-builders/docker"
   args: ["push", "gcr.io/dotintegral/botintegral:$SHORT_SHA"]

@@ -10,7 +10,6 @@ RUN yarn
 COPY ./ /app/
 
 
-RUN yarn run create-env
 RUN echo "FILE .env"
 RUN cat .env
 
