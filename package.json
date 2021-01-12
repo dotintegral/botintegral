@@ -6,7 +6,7 @@
   "scripts": {
     "start": "ts-node src/app.ts",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "create-env": "printenv > .env"
+    "create-env": "ts-node ./src/scripts/create-env.ts"
   },
   "author": "",
   "license": "ISC",

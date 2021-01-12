@@ -9,3 +9,4 @@ tmp
 logs/
 config.json
 .env
+.env.copy

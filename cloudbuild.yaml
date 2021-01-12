@@ -3,11 +3,11 @@ steps:
   entrypoint: yarn
   args: ["run", "create-env"]
   env:
-    - 'COMMAND_PREFIX=${_COMMAND_PREFIX}'
-    - 'DISCORD_TOKEN=${_DISCORD_TOKEN}'
-    - 'DATA_QUOTES=${_DATA_QUOTES}'
-    - 'DATA_QUOTES=${_DATA_QUOTES}'
-    - 'DATA_CRONTAB=${_DATA_CRONTAB}'
+    - 'BOT_COMMAND_PREFIX=${_COMMAND_PREFIX}'
+    - 'BOT_DISCORD_TOKEN=${_DISCORD_TOKEN}'
+    - 'BOT_DATA_QUOTES=${_DATA_QUOTES}'
+    - 'BOT_DATA_QUOTES=${_DATA_QUOTES}'
+    - 'BOT_DATA_CRONTAB=${_DATA_CRONTAB}'
 
 - name: "gcr.io/cloud-builders/docker"
   args: ["build", "-t", "gcr.io/dotintegral/botintegral:$SHORT_SHA", "."]
