@@ -8,6 +8,7 @@ const entries = Object.entries(process.env).filter(
 
 const env = Object.fromEntries(entries);
 
+console.log("Improved env");
 console.log({ env });
 
 export const config = {
