@@ -1,4 +1,5 @@
-import fs from "fs";
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const fs = require("fs");
 
 const entries = Object.entries(process.env).filter(([key]) =>
   key.startsWith("BOT_"),
