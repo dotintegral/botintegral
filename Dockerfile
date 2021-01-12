@@ -9,8 +9,4 @@ RUN yarn
 
 COPY ./ /app/
 
-
-RUN echo "FILE .env"
-RUN cat .env
-
 CMD ["yarn", "start"]
